@@ -1,3 +1,4 @@
+import Boat from "./Boat";
 import Buoy from "./Buoy";
 
 class BuoyManager {
@@ -6,7 +7,7 @@ class BuoyManager {
     private _ctx: CanvasRenderingContext2D;
 
     private _speed = 100;
-    private _spawnRate = 1; // 1 per second
+    private _spawnRate = 2; // 1 per second
 
     private timeSinceSpawn = 0;
 
@@ -15,20 +16,33 @@ class BuoyManager {
         this.buoys = [];
     }
 
+    checkCollisions(boat: Boat) {
+        return this.buoys.some(buoy => buoy.isColliding(boat));
+    }
+
     update(delta: number) {
+        let points = 0;
+
         // Remove buoys that are out of screen to save memory
-        this.buoys = this.buoys.filter(buoy => !buoy.isOutOfScreen());
+        this.buoys = this.buoys.filter(buoy => {
+
+            const isOut = buoy.isOutOfScreen()
+            points += isOut ? 1 : 0;
+
+            return !isOut;
+        });
 
         // Update buoys positions
         this.buoys.forEach(buoy => buoy.update(delta, this._speed));
 
         // Spawn new buoy at the spawn rate
-        if (this.timeSinceSpawn > 1000) {
+        if (this.timeSinceSpawn > this._spawnRate) {
             this.spawnBuoy();
             this.timeSinceSpawn = 0;
         }
 
         this.timeSinceSpawn += delta;
+        return points;
     }
 
     render() {

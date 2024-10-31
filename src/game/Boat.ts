@@ -25,6 +25,14 @@ class Boat {
         this._img.style.transform = "rotate(90deg)";
     }
 
+    getX() {
+        return this.x;
+    }
+
+    getY() {
+        return this.y;
+    }
+
     goTop() {
         this.targetY = this.POS_TOP
     }

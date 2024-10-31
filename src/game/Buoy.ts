@@ -2,6 +2,7 @@ import { MAP_WIDTH, TILE_SIZE } from "../utils/constants";
 
 import redBuoy from "../assets/buoys/red-buoy.png";
 import greenBuoy from "../assets/buoys/green-buoy.png";
+import Boat from "./Boat";
 
 
 class Buoy {
@@ -21,6 +22,15 @@ class Buoy {
         this._type = type;
         this._img.src = this._type === "red" ? redBuoy : greenBuoy;
         this.y = this._type === "red" ? this.POS_TOP : this.POS_BOTTOM;
+    }
+
+    isColliding(boat: Boat) {
+        // 1. Check if the boat is in the same lane as the buoy
+        // 2. Boat overlaps with the buoy in the x-axis
+        if (Math.abs(boat.getY() - this.y) < (TILE_SIZE + 16) && boat.getX() + (TILE_SIZE * 2) - 15 > this.x && boat.getX() < this.x + TILE_SIZE * 2) {
+            return true;
+        }
+        return false;
     }
 
     update(delta: number, speed: number) {
