@@ -7,7 +7,18 @@ import BuoyManager from './game/BuoyManager';
 import { FaArrowRotateRight } from 'react-icons/fa6';
 
 
+function computeHighScore(score: number) {
 
+    let currentMaxScore = parseInt(localStorage.getItem("max-score") || "0")
+    if (!currentMaxScore) {
+        localStorage.setItem("max-score", score.toString())
+    }
+
+    if (currentMaxScore && score > currentMaxScore) {
+        localStorage.setItem("max-score", score + "")
+    }
+
+}
 
 
 function Game() {
@@ -61,6 +72,7 @@ function Game() {
             }
 
             score += buoyManager.update(delta);
+            computeHighScore(score)
             gameOver = buoyManager.checkCollisions(boat);
 
             world.render(delta); // Render the world as background
@@ -75,6 +87,11 @@ function Game() {
             const scoreText = `Score: ${score}`;
             const textMetrics = ctx.measureText(scoreText);
             ctx.fillText(`Score: ${score}`, (MAP_WIDTH - textMetrics.width) / 2, 40);
+
+            // Current Max Score
+            ctx.fillStyle = "#000000";
+            ctx.font = "12px Arial"
+            ctx.fillText(`Highest Score: ${localStorage.getItem("max-score") || 0}`, MAP_WIDTH - 150, 40)
 
             if (DEV_MODE) {
                 ctx.fillStyle = "#ff0000";
@@ -99,7 +116,7 @@ function Game() {
             <canvas ref={canvasRef} width={MAP_WIDTH} height={MAP_HEIGHT} className="bg-blue-400" />
 
             <div className="mt-6">
-                <button className="text-4xl" onClick={() => setRestart(c => c += 1)}>
+                <button style={{ display: 'none' }} className="text-4xl" onClick={() => setRestart(c => c += 1)}>
                     <FaArrowRotateRight />
                 </button>
             </div>
