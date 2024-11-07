@@ -54,16 +54,17 @@ function Game() {
         function handleKeyDown(event: KeyboardEvent) {
             switch (event.key) {
                 case "ArrowUp":
-                    console.log("ArrowUp");
                     boat.goTop();
                     break;
                 case "ArrowDown":
-                    console.log("ArrowDown");
                     boat.goBottom();
                     break;
                 case " ":
-                    console.log("Space");
-                    boat.switchPlaces();
+                    if (!gameOver) {
+                        boat.switchPlaces();
+                    } else {
+                        resetBtn.click()
+                    }
                     break;
             }
         }
@@ -100,14 +101,16 @@ function Game() {
 
             // Current Max Score
             ctx.fillStyle = "#000000";
-            ctx.font = "12px Arial"
-            ctx.fillText(`Highest Score: ${localStorage.getItem("max-score") || 0}`, MAP_WIDTH - 150, 40)
+            ctx.font = "16px Arial"
+            const maxScoreText = `Top Score: ${localStorage.getItem("max-score") || 0}`;
+            const maxScoreTextMetrics = ctx.measureText(maxScoreText);
+            ctx.fillText(maxScoreText, MAP_WIDTH - maxScoreTextMetrics.width - 20, 40)
 
             if (DEV_MODE) {
                 ctx.fillStyle = "#ff0000";
                 ctx.font = "16px Arial";
                 ctx.fillText(`FPS: ${Math.round(1 / delta)}`, 10, 20);
-                grid.render();
+                // grid.render();
             }
 
             animatedFrameId = window.requestAnimationFrame(render);
