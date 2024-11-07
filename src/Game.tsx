@@ -25,7 +25,16 @@ function Game() {
     const canvasRef = React.useRef<HTMLCanvasElement>(null)
     const [restart, setRestart] = React.useState(0);
 
+    const handleRestart = () => {
+        setRestart(c => c += 1);
+        const resetBtn = document.getElementById("restart") as HTMLButtonElement;
+        resetBtn.style.visibility = "hidden";
+    }
+
     useEffect(() => {
+
+        const resetBtn = document.getElementById("restart") as HTMLButtonElement;
+
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -68,10 +77,11 @@ function Game() {
             console.log("State:", gameOver);
             if (gameOver) {
                 console.log("Game Over");
+                resetBtn.style.visibility = "visible";
                 return;
             }
 
-            score += buoyManager.update(delta);
+            score += buoyManager.update(delta, score);
             computeHighScore(score)
             gameOver = buoyManager.checkCollisions(boat);
 
@@ -108,6 +118,7 @@ function Game() {
         return () => {
             window.cancelAnimationFrame(animatedFrameId);
             window.removeEventListener("keydown", handleKeyDown);
+            resetBtn.style.visibility = "hidden";
         }
     }, [restart])
 
@@ -116,7 +127,7 @@ function Game() {
             <canvas ref={canvasRef} width={MAP_WIDTH} height={MAP_HEIGHT} className="bg-blue-400" />
 
             <div className="mt-6">
-                <button style={{ display: 'none' }} className="text-4xl" onClick={() => setRestart(c => c += 1)}>
+                <button id="restart" style={{ visibility: 'hidden' }} className="text-4xl" onClick={() => handleRestart()}>
                     <FaArrowRotateRight />
                 </button>
             </div>

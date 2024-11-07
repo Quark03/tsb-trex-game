@@ -20,7 +20,7 @@ class BuoyManager {
         return this.buoys.some(buoy => buoy.isColliding(boat));
     }
 
-    update(delta: number) {
+    update(delta: number, score: number) {
         let points = 0;
 
         // Remove buoys that are out of screen to save memory
@@ -32,11 +32,18 @@ class BuoyManager {
             return !isOut;
         });
 
+        const currentSpeed = this._speed + (score * 5);
+        const currentSpawnRate = this._spawnRate * (100 / currentSpeed)
+
+        console.log("Current speed:", currentSpeed);
+        console.log("Current spawn rate:", currentSpawnRate);
+
         // Update buoys positions
-        this.buoys.forEach(buoy => buoy.update(delta, this._speed));
+        this.buoys.forEach(buoy => buoy.update(delta, this._speed + (score * 5)));
+        // this.buoys.forEach(buoy => buoy.update(delta, this._speed));
 
         // Spawn new buoy at the spawn rate
-        if (this.timeSinceSpawn > this._spawnRate) {
+        if (this.timeSinceSpawn > currentSpawnRate) {
             this.spawnBuoy();
             this.timeSinceSpawn = 0;
         }
