@@ -8,6 +8,9 @@ function App() {
         <h1 className="text-4xl font-ethnocentric uppercase">Técnico <span className="text-tsb-blue">Solar</span> Boat</h1>
       </div>
       <Game />
+      <div className="fixed bottom-0 right-0 mb-2 mr-2">
+        <p>Author: António Festas - 112386 </p>
+      </div>
     </main>
   )
 }
