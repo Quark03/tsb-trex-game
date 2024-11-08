@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Boat from './game/Boat'
 import { DEV_MODE, MAP_HEIGHT, MAP_WIDTH } from './utils/constants';
 import World from './game/World';
-import Grid from './game/Grid';
+// import Grid from './game/Grid';
 import BuoyManager from './game/BuoyManager';
 import { FaArrowRotateRight } from 'react-icons/fa6';
 
@@ -42,7 +42,7 @@ function Game() {
 
         const boat = new Boat(ctx);
         const world = new World(ctx);
-        const grid = new Grid(ctx);
+        // const grid = new Grid(ctx);
         const buoyManager = new BuoyManager(ctx);
 
 
@@ -86,7 +86,7 @@ function Game() {
             computeHighScore(score)
             gameOver = buoyManager.checkCollisions(boat);
 
-            world.render(delta); // Render the world as background
+            world.render(); // Render the world as background
             boat.render(delta);
             buoyManager.render();
 

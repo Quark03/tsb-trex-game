@@ -32,7 +32,7 @@ class World {
         console.log("Water end:", this.WATER_END);
     }
 
-    public render(dela: number) {
+    public render() {
         for (let y = 0; y < MAP_HEIGHT; y += TILE_SIZE) {
             for (let x = 0; x < MAP_WIDTH; x += TILE_SIZE) {
                 this.renderTile(x, y);
