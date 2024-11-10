@@ -1,5 +1,7 @@
 # TSB T-Rex Game
 
+This game was made during the recruitment process for the Electrical Systems Department of Técnico Solar Boat by António Festas
+
 ## Development Run
 
 Install Dependencies
